@@ -4,46 +4,49 @@ import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
-  const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
-  // Calculate total amount for all products in the cart
-    const calculateTotalAmount = () => {
-        return cartItems.reduce((total, item) => {
-            const price = parseFloat(item.cost.substring(1));
-            return total + price * item.quantity;
-        }, 0);
-    };
+  // ✅ Calculate total cost for all items
+  const calculateTotalAmount = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      const cost = parseFloat(item.cost.substring(1)); // remove "$"
+      total += cost * item.quantity;
+    });
+    return total.toFixed(2);
+  };
 
-    const handleContinueShopping = (e) => {
-        e.preventDefault(e);
-        onContinueShopping(e);
-    };
+  // ✅ Calculate subtotal for each item
+  const calculateTotalCost = (item) => {
+    const cost = parseFloat(item.cost.substring(1));
+    return (cost * item.quantity).toFixed(2);
+  };
 
+  // ✅ Handlers
+  const handleContinueShopping = (e) => {
+    onContinueShopping(e);
+  };
 
+  const handleCheckoutShopping = (e) => {
+    alert("Functionality to be added for future reference");
+  };
 
-    const handleIncrement = (item) => {
-        dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
-    };
+  const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+  };
 
-    const handleDecrement = (item) => {
-        if (item.quantity > 1) {
-            dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-        } 
-        else {
-            dispatch(removeItem(item.name)); 
-        }
-    };
+  const handleDecrement = (item) => {
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name));
+    }
+  };
 
-    const handleRemove = (item) => {
-        dispatch(removeItem(item.name));
-    };
-
-    // Calculate total cost based on quantity for an item
-    const calculateTotalCost = (item) => {
-        const price = parseFloat(item.cost.substring(1)); // Remove $ and convert to number
-        return price * item.quantity;
-    };
+  const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
+  };
 
   return (
     <div className="cart-container">
