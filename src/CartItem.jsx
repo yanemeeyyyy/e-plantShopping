@@ -5,12 +5,12 @@ import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
+  const cart = useSelector((state) => state.cart.items);
 
   // ✅ Calculate total cost for all items
   const calculateTotalAmount = () => {
     let total = 0;
-    cartItems.forEach((item) => {
+    cart.forEach((item) => {
       const cost = parseFloat(item.cost.substring(1)); // remove "$"
       total += cost * item.quantity;
     });
