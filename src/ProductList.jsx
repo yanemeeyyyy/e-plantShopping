@@ -286,7 +286,7 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-                    {plantsArray.map((category, index) => {
+                    {plantsArray.map((category, index) => (
                         <div key ={index}>
                             <h1>
                                 <div>{category.category}</div>
@@ -313,7 +313,7 @@ function ProductList({ onHomeClick }) {
                                 ))}
                             </div>
                         </div>
-                    })}
+                    ))}
                 </div>
             ) : (
                 <CartItem onContinueShopping={handleContinueShopping} />
